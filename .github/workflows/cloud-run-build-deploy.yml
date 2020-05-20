@@ -25,6 +25,25 @@ env:
   SERVICE_NAME: max-prime
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13.x
+    - name: Checkout code
+      uses: actions/checkout@v1
+    - name: build
+      run: |
+        export GO111MODULE=on
+        GOOS=windows GOARCH=amd64 go build -o bin/ci-test-windows-amd64.exe
+        GOOS=linux   GOARCH=amd64 go build -o bin/ci-test-linux-amd64
+    - name: upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: binaries
+        path: bin/
   setup-build-deploy:
     name: Setup, Build, and Deploy
     runs-on: ubuntu-latest
@@ -45,7 +64,7 @@ jobs:
       run: |-
         gcloud builds submit \
           --quiet \
-          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:latest"
 
     # Deploy image to Cloud Run
     - name: Deploy
