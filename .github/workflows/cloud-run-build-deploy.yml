@@ -16,9 +16,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Build image
-        uses: actions/docker/cli@master
-        with:
-          args: "build . --tag gcr.io/${{ secrets.GCLOUD_PROJECT }}/maxprime"
+        run: docker build . --tag gcr.io/${{ secrets.GCLOUD_PROJECT }}/maxprime 
 
       - name: Authenticate to GCP
         uses: actions/gcloud/auth@master
