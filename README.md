@@ -1,4 +1,4 @@
-# maxprime 
+# maxprime
 
 UI and REST service demo calculating highest prime number up to the number specified by the user. Good for infrastructure scaling demo
 
